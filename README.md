@@ -1,0 +1,632 @@
+[index.html](https://github.com/user-attachments/files/23972415/index.html)
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בית חשמונאי - פרויקט דיור מוגן | מיני סייט</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Gemini API Import -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            navy: '#1a365d',
+                            gold: '#b7950b',
+                            goldLight: '#d4af37',
+                            light: '#fdfcf8',
+                            gray: '#4a5568'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Rubik', 'sans-serif'],
+                        display: ['Heebo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .hero-bg {
+            background-image: linear-gradient(rgba(26, 54, 93, 0.85), rgba(26, 54, 93, 0.7)), url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        .animate-fade-up {
+            animation: fadeUp 1s ease-out;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Loader styles */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #b7950b;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .markdown-prose ul { list-style-type: disc; margin-right: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
+        .markdown-prose strong { color: #1a365d; font-weight: 700; }
+        .markdown-prose p { margin-bottom: 0.75rem; }
+    </style>
+</head>
+<body class="bg-brand-light font-sans text-brand-gray smooth-scroll">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-sm shadow-md transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <i class="fa-solid fa-building-columns text-brand-gold text-2xl"></i>
+                    <span class="font-display font-bold text-2xl text-brand-navy">בית חשמונאי</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="mr-10 flex items-baseline space-x-4 space-x-reverse">
+                        <a href="#about" class="text-brand-navy hover:text-brand-gold px-3 py-2 rounded-md text-md font-medium transition-colors">אודות הפרויקט</a>
+                        <a href="#program" class="text-brand-navy hover:text-brand-gold px-3 py-2 rounded-md text-md font-medium transition-colors">פרוגרמה</a>
+                        <a href="#economics" class="text-brand-navy hover:text-brand-gold px-3 py-2 rounded-md text-md font-medium transition-colors">מודל עסקי</a>
+                        <a href="#location" class="text-brand-navy hover:text-brand-gold px-3 py-2 rounded-md text-md font-medium transition-colors">מיקום</a>
+                        <a href="#ai-consultant" class="text-brand-navy hover:text-brand-gold px-3 py-2 rounded-md text-md font-medium transition-colors flex items-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-brand-gold text-sm"></i> יועץ AI</a>
+                        <a href="#contact" class="bg-brand-navy text-white px-5 py-2 rounded-full font-bold hover:bg-brand-gold transition-colors">צור קשר</a>
+                    </div>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-brand-navy hover:text-brand-gold focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-right">
+                <a href="#about" class="text-brand-navy block px-3 py-2 rounded-md text-base font-medium">אודות הפרויקט</a>
+                <a href="#program" class="text-brand-navy block px-3 py-2 rounded-md text-base font-medium">פרוגרמה</a>
+                <a href="#economics" class="text-brand-navy block px-3 py-2 rounded-md text-base font-medium">מודל עסקי</a>
+                <a href="#location" class="text-brand-navy block px-3 py-2 rounded-md text-base font-medium">מיקום</a>
+                <a href="#ai-consultant" class="text-brand-navy block px-3 py-2 rounded-md text-base font-medium">יועץ AI ✨</a>
+                <a href="#contact" class="text-brand-gold block px-3 py-2 rounded-md text-base font-bold">צור קשר</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-bg h-screen flex items-center justify-center text-center px-4 relative">
+        <div class="max-w-4xl mx-auto animate-fade-up">
+            <span class="text-brand-gold font-bold tracking-wider uppercase mb-4 block text-lg">בחינת היתכנות ופיתוח</span>
+            <h1 class="font-display text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
+                העתיד של הדיור המוגן<br>במרכז הארץ
+            </h1>
+            <p class="text-xl text-gray-200 mb-10 max-w-2xl mx-auto leading-relaxed">
+                הזדמנות נדל"נית ייחודית על מגרש של 12.6 דונם. שילוב מנצח של דיור מוגן יוקרתי, מסחר ומשרדים המבטיח תשואה יציבה ועליית ערך דרמטית.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#economics" class="bg-brand-gold text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-brand-navy transition-all transform hover:-translate-y-1 shadow-lg">
+                    הצג ניתוח כלכלי
+                </a>
+                <a href="#ai-consultant" class="bg-white text-brand-navy px-8 py-4 rounded-full font-bold text-lg hover:bg-brand-gold hover:text-white transition-all transform hover:-translate-y-1 shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    שאל את המומחה הווירטואלי
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <a href="#about" class="text-white opacity-70 hover:opacity-100 transition-opacity">
+                <i class="fa-solid fa-chevron-down text-3xl"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Key Stats Section (Floating) -->
+    <div class="relative -mt-20 z-10 px-4 mb-20">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Stat 1 -->
+            <div class="bg-white p-8 rounded-xl shadow-xl border-t-4 border-brand-navy text-center transform hover:-translate-y-2 transition-transform duration-300">
+                <div class="text-brand-gold text-4xl mb-3"><i class="fa-solid fa-ruler-combined"></i></div>
+                <div class="text-5xl font-display font-black text-brand-navy mb-2">12.6</div>
+                <div class="text-gray-500 font-medium">דונם שטח מגרש</div>
+            </div>
+            <!-- Stat 2 -->
+            <div class="bg-white p-8 rounded-xl shadow-xl border-t-4 border-brand-navy text-center transform hover:-translate-y-2 transition-transform duration-300">
+                <div class="text-brand-gold text-4xl mb-3"><i class="fa-solid fa-house-chimney-medical"></i></div>
+                <div class="text-5xl font-display font-black text-brand-navy mb-2">175</div>
+                <div class="text-gray-500 font-medium">יחידות דיור מוגן</div>
+            </div>
+            <!-- Stat 3 -->
+            <div class="bg-white p-8 rounded-xl shadow-xl border-t-4 border-brand-navy text-center transform hover:-translate-y-2 transition-transform duration-300">
+                <div class="text-brand-gold text-4xl mb-3"><i class="fa-solid fa-sack-dollar"></i></div>
+                <div class="text-5xl font-display font-black text-brand-navy mb-2">32.7M</div>
+                <div class="text-gray-500 font-medium">צפי הכנסות שנתי (₪)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="order-2 lg:order-1 relative">
+                <div class="absolute -top-4 -right-4 w-24 h-24 bg-brand-gold/20 rounded-full z-0"></div>
+                <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-brand-navy/10 rounded-full z-0"></div>
+                <img src="https://images.unsplash.com/photo-1574958269340-fa927503f3dd?q=80&w=1948&auto=format&fit=crop" alt="תוכנית אדריכלית" class="relative z-10 rounded-2xl shadow-2xl w-full object-cover h-[500px]">
+                <div class="absolute bottom-8 right-8 bg-white p-6 rounded-lg shadow-lg z-20 max-w-xs border-r-4 border-brand-gold">
+                    <p class="font-bold text-brand-navy text-lg">"מיקום אסטרטגי המשלב איכות חיים כפרית עם נגישות למרכז"</p>
+                </div>
+            </div>
+            <div class="order-1 lg:order-2">
+                <h2 class="text-brand-gold font-bold uppercase tracking-wider mb-2">חזון הפרויקט</h2>
+                <h3 class="font-display text-4xl md:text-5xl font-bold text-brand-navy mb-6">דיור מוגן ברמה הגבוהה ביותר</h3>
+                <p class="text-lg leading-relaxed mb-6">
+                    מגרש בית חשמונאי מציג פוטנציאל נדיר להקמת מתחם דיור מוגן המשלב מגורים איכותיים, מסחר תומך ומרפאות. התכנון מנצל את זכויות הבנייה באופן אופטימלי כדי לייצר קומפלקס הוליסטי המשרת את דייריו ואת הסביבה.
+                </p>
+                <ul class="space-y-4">
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-brand-gold mt-1 ml-3"></i>
+                        <span><strong>ביקושים גבוהים:</strong> מחסור בפתרונות דיור מוגן איכותיים באזור.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-brand-gold mt-1 ml-3"></i>
+                        <span><strong>תמהיל שימושים:</strong> שילוב חכם של מסחר ומשרדים (1,300 מ"ר כל אחד) להגדלת התשואה.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-check text-brand-gold mt-1 ml-3"></i>
+                        <span><strong>יציבות פיננסית:</strong> מודל הכנסות המבוסס על שכר דירה, פיקדונות ושירותים נלווים.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Program / Usage Breakdown -->
+    <section id="program" class="py-20 bg-gray-50 px-4">
+        <div class="max-w-7xl mx-auto text-center mb-16">
+            <h2 class="font-display text-4xl font-bold text-brand-navy mb-4">פרוגרמה ושימושים</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">ניצול מקסימלי של 12.6 דונם ליצירת הכנסה מגוונת</p>
+        </div>
+        
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="bg-white p-8 rounded-xl shadow-lg border hover:border-brand-gold transition-colors group">
+                <div class="w-16 h-16 bg-brand-navy/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-brand-navy transition-colors">
+                    <i class="fa-solid fa-building-user text-2xl text-brand-navy group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-2xl font-bold text-brand-navy mb-2">מגורים ודיור מוגן</h4>
+                <p class="text-4xl font-black text-brand-gold mb-4">93%</p>
+                <p class="text-gray-600">מההכנסות הצפויות. 175 יחידות דיור מרווחות ומאובזרות, המהוות את ליבת הפרויקט והביטחון הכלכלי.</p>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="bg-white p-8 rounded-xl shadow-lg border hover:border-brand-gold transition-colors group">
+                <div class="w-16 h-16 bg-brand-navy/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-brand-navy transition-colors">
+                    <i class="fa-solid fa-cart-shopping text-2xl text-brand-navy group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-2xl font-bold text-brand-navy mb-2">מסחר ושירותים</h4>
+                <p class="text-4xl font-black text-brand-gold mb-4">1,300</p>
+                <p class="text-gray-600">מטר רבוע של שטחי מסחר: בית קפה, סופרמרקט קטן, וחנויות נוחות המשרתות את הדיירים והשכונה.</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white p-8 rounded-xl shadow-lg border hover:border-brand-gold transition-colors group">
+                <div class="w-16 h-16 bg-brand-navy/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-brand-navy transition-colors">
+                    <i class="fa-solid fa-user-doctor text-2xl text-brand-navy group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-2xl font-bold text-brand-navy mb-2">משרדים ומרפאות</h4>
+                <p class="text-4xl font-black text-brand-gold mb-4">1,300</p>
+                <p class="text-gray-600">מטר רבוע של שטחי תעסוקה, בדגש על קליניקות רפואיות ושירותים פרה-רפואיים תומכים.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Economics / Business Model -->
+    <section id="economics" class="py-20 px-4 bg-brand-navy text-white relative overflow-hidden">
+        <!-- Background decorative elements -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-brand-gold opacity-5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">המודל הכלכלי</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">למה עסקת קומבינציה היא המהלך הנכון עבור בעלי הקרקע?</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Text / Explanation -->
+                <div>
+                    <h3 class="text-3xl font-bold text-brand-gold mb-6">קפיצת ערך של פי 5</h3>
+                    <p class="text-lg text-gray-300 mb-8 leading-relaxed">
+                        מכירה רגילה של הקרקע במצבה הנוכחי (AS-IS) תניב תמורה מוגבלת. לעומת זאת, כניסה לעסקת קומבינציה בשותפות מלאה מאפשרת לבעלי הקרקע ליהנות מהפירות של היזמות, התכנון והבנייה.
+                    </p>
+                    
+                    <div class="bg-white/10 p-6 rounded-xl border border-white/20 mb-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold text-xl">שווי פרויקט גמור</span>
+                            <span class="font-display font-black text-2xl text-brand-gold">140 מיליון ₪</span>
+                        </div>
+                        <p class="text-sm text-gray-400">על פי היוון של 7.5% לאחר אכלוס מלא</p>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-1 bg-white/5 p-4 rounded-lg text-center">
+                            <span class="block text-3xl font-bold text-brand-gold mb-1">22%</span>
+                            <span class="text-sm">אחוז קומבינציה מוצע</span>
+                        </div>
+                        <div class="flex-1 bg-white/5 p-4 rounded-lg text-center">
+                            <span class="block text-3xl font-bold text-brand-gold mb-1">9.1M</span>
+                            <span class="text-sm">NOI שנתי מוערך</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Visual -->
+                <div class="bg-white text-brand-navy p-8 rounded-2xl shadow-2xl">
+                    <h4 class="font-bold text-xl mb-8 border-b pb-4">השוואת תמורה לבעל הקרקע (בשקלים)</h4>
+                    
+                    <!-- Bar 1 -->
+                    <div class="mb-8">
+                        <div class="flex justify-between mb-2 font-bold">
+                            <span>מכירה ישירה (מזומן)</span>
+                            <span class="text-gray-500">9 מיליון</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
+                            <div class="bg-gray-500 h-6 rounded-full" style="width: 15%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bar 2 -->
+                    <div>
+                        <div class="flex justify-between mb-2 font-bold">
+                            <span class="text-brand-gold font-black text-lg">עסקת קומבינציה</span>
+                            <span class="text-brand-navy font-black text-lg">55 מיליון</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-10 overflow-hidden relative shadow-inner">
+                            <div class="bg-gradient-to-r from-brand-navy to-brand-gold h-10 rounded-full flex items-center justify-end px-4 text-white font-bold text-sm whitespace-nowrap" style="width: 90%">
+                                פוטנציאל רווח מקסימלי
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">*הערכת שווי נכסים מניבים בידי בעל הקרקע בתום הפרויקט</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section (New) -->
+    <section id="location" class="py-20 px-4 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl font-bold text-brand-navy mb-4">מיקום מנצח</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">בלב הארץ, בסביבה כפרית ירוקה ונגישה.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                <!-- Map -->
+                <div class="rounded-2xl overflow-hidden shadow-lg h-[400px]">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13548.88566994917!2d34.9392!3d31.8974!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1502c8927011d677%3A0xa1961917f8a37941!2zYmVpdCBoYXNtb25haQ!5e0!3m2!1sen!2sil!4v1715000000000!5m2!1sen!2sil" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+
+                <!-- Distances -->
+                <div class="bg-gray-50 rounded-2xl p-8 flex flex-col justify-center shadow-lg border border-gray-100">
+                    <h3 class="font-bold text-2xl text-brand-navy mb-6">קרבה למרכזי עניין</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4 p-4 bg-white rounded-xl shadow-sm">
+                            <div class="w-12 h-12 bg-brand-gold/10 rounded-full flex items-center justify-center text-brand-gold text-xl"><i class="fa-solid fa-plane-departure"></i></div>
+                            <div>
+                                <span class="block font-bold text-brand-navy text-lg">נמל תעופה בן גוריון</span>
+                                <span class="text-gray-500">כ-20 דקות נסיעה</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-white rounded-xl shadow-sm">
+                            <div class="w-12 h-12 bg-brand-navy/10 rounded-full flex items-center justify-center text-brand-navy text-xl"><i class="fa-solid fa-city"></i></div>
+                            <div>
+                                <span class="block font-bold text-brand-navy text-lg">תל אביב</span>
+                                <span class="text-gray-500">כ-30 דקות נסיעה</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-white rounded-xl shadow-sm">
+                            <div class="w-12 h-12 bg-brand-gold/10 rounded-full flex items-center justify-center text-brand-gold text-xl"><i class="fa-solid fa-train"></i></div>
+                            <div>
+                                <span class="block font-bold text-brand-navy text-lg">מודיעין</span>
+                                <span class="text-gray-500">כ-15 דקות נסיעה</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gemini AI Features Section -->
+    <section id="ai-consultant" class="py-20 px-4 bg-gray-50">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="bg-brand-navy/10 text-brand-navy px-4 py-1 rounded-full text-sm font-bold mb-4 inline-block border border-brand-navy/20">
+                    <i class="fa-solid fa-robot mr-1 ml-1"></i> טכנולוגיה חדשנית
+                </span>
+                <h2 class="font-display text-4xl font-bold text-brand-navy mb-4">יועץ הנדל"ן הווירטואלי שלך</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">השתמשו בכלי ה-AI שלנו כדי לנתח את ההזדמנות ולקבל תשובות מיידיות על הפרויקט.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- AI Feature 1: Yield Projector -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden flex flex-col">
+                    <div class="bg-brand-navy p-6 text-white">
+                        <h3 class="font-bold text-xl flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-brand-gold"></i>
+                            מנתח השקעה חכם
+                        </h3>
+                        <p class="text-sm text-gray-300 mt-1">בדוק מה הפוטנציאל של שטח הקרקע שלך</p>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="land-size">גודל הקרקע (בדונם) או סכום להשקעה</label>
+                            <input type="text" id="ai-input-invest" class="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:border-brand-gold" placeholder="לדוגמה: 0.5 דונם">
+                        </div>
+                        <button id="btn-analyze" class="bg-brand-gold hover:bg-brand-navy text-white font-bold py-3 px-4 rounded w-full transition-colors duration-300 shadow-md flex justify-center items-center gap-2 mb-4">
+                            <span>✨ נתח את הפוטנציאל</span>
+                            <div id="loader-analyze" class="loader hidden"></div>
+                        </button>
+                        <div id="result-analyze" class="bg-gray-50 p-4 rounded border border-gray-200 text-sm text-gray-700 min-h-[150px] max-h-[300px] overflow-y-auto markdown-prose">
+                            התוצאות יופיעו כאן...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Feature 2: Ask Avi Chat -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden flex flex-col">
+                    <div class="bg-brand-navy p-6 text-white">
+                        <h3 class="font-bold text-xl flex items-center gap-2">
+                            <i class="fa-solid fa-comments text-brand-gold"></i>
+                            שאל את אבי (בוט מומחה)
+                        </h3>
+                        <p class="text-sm text-gray-300 mt-1">תשובות מיידיות על הפרויקט ועסקת הקומבינציה</p>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="user-question">השאלה שלך</label>
+                            <input type="text" id="ai-input-chat" class="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:border-brand-gold" placeholder="לדוגמה: למה עסקת קומבינציה עדיפה?">
+                        </div>
+                        <button id="btn-chat" class="bg-brand-navy hover:bg-brand-gold text-white font-bold py-3 px-4 rounded w-full transition-colors duration-300 shadow-md flex justify-center items-center gap-2 mb-4">
+                            <span>✨ שאל את המומחה</span>
+                            <div id="loader-chat" class="loader hidden"></div>
+                        </button>
+                        <div id="result-chat" class="bg-gray-50 p-4 rounded border border-gray-200 text-sm text-gray-700 min-h-[150px] max-h-[300px] overflow-y-auto markdown-prose">
+                            התשובה תופיע כאן...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action / Contact -->
+    <section id="contact" class="py-20 px-4 bg-brand-light">
+        <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
+            <div class="md:w-1/2 bg-brand-navy p-10 text-white flex flex-col justify-center relative">
+                <div class="absolute inset-0 bg-brand-gold opacity-10 pattern-dots"></div>
+                <h3 class="font-display text-3xl font-bold mb-4 relative z-10">בואו נדבר ביזנס</h3>
+                <p class="mb-8 text-gray-300 relative z-10">אני מזמין אתכם לפגישת היכרות והצגת התוכנית העסקית המלאה. יחד נהפוך את הקרקע לנכס מניב.</p>
+                <div class="space-y-4 relative z-10">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-user text-brand-gold w-8"></i>
+                        <span class="font-bold">אבי חזן</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-briefcase text-brand-gold w-8"></i>
+                        <span>יזם ומפתח פרויקטים</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-phone text-brand-gold w-8"></i>
+                        <span>052-5944424</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-envelope text-brand-gold w-8"></i>
+                        <span>avi7756@gmail.com</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="md:w-1/2 p-10">
+                <!-- FORM CHANGED TO USE FORMSUBMIT -->
+                <form action="https://formsubmit.co/avi7756@gmail.com" method="POST">
+                    <!-- Disable Captcha (Optional) -->
+                    <input type="hidden" name="_captcha" value="false">
+                    <!-- Success Page (Reloads the same page) -->
+                    <input type="hidden" name="_next" value="https://avi7756.github.io/beit-hasmonean/">
+                    <!-- Template (Makes the email look nicer) -->
+                    <input type="hidden" name="_template" value="table">
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="name">שם מלא</label>
+                        <input class="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:border-brand-gold" id="name" name="name" type="text" placeholder="ישראל ישראלי" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">טלפון</label>
+                        <input class="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:border-brand-gold" id="phone" name="phone" type="tel" placeholder="052-5944424" required>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="message">הודעה</label>
+                        <textarea class="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:border-brand-gold h-32" id="message" name="message" placeholder="אשמח לשמוע פרטים נוספים על הצעת הקומבינציה..."></textarea>
+                    </div>
+                    <button class="bg-brand-gold hover:bg-brand-navy text-white font-bold py-3 px-4 rounded w-full transition-colors duration-300 shadow-lg flex items-center justify-center gap-2" type="submit">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        שליחת פנייה
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="mb-2">&copy; 2024 אבי חזן - יזמות ופיתוח עסקי.</p>
+            <p class="text-sm">כל הזכויות שמורות. הנתונים המוצגים באתר הינם להמחשה בלבד וכפופים לבדיקות נאותות סופיות.</p>
+        </div>
+    </footer>
+
+    <!-- Gemini API Logic -->
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+        // Initialize Gemini API
+        const apiKey = ""; // API Key provided by environment
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-09-2025" });
+
+        // Helper function for delays
+        const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+        // Retry logic for API calls
+        async function generateContentWithRetry(prompt) {
+            let retries = 0;
+            const maxRetries = 3;
+            const backoff = [1000, 2000, 4000];
+
+            while (retries < maxRetries) {
+                try {
+                    const result = await model.generateContent({
+                        contents: [{ parts: [{ text: prompt }] }]
+                    });
+                    return result.response.text();
+                } catch (error) {
+                    console.error(`Attempt ${retries + 1} failed:`, error);
+                    retries++;
+                    if (retries === maxRetries) throw error;
+                    await delay(backoff[retries - 1]);
+                }
+            }
+        }
+
+        // --- Feature 1: Investment Analyzer ---
+        const btnAnalyze = document.getElementById('btn-analyze');
+        const inputInvest = document.getElementById('ai-input-invest');
+        const resultAnalyze = document.getElementById('result-analyze');
+        const loaderAnalyze = document.getElementById('loader-analyze');
+
+        if(btnAnalyze) {
+            btnAnalyze.addEventListener('click', async () => {
+                const userInput = inputInvest.value.trim();
+                if (!userInput) {
+                    resultAnalyze.innerHTML = '<span class="text-red-500">נא להזין גודל קרקע או סכום להשקעה.</span>';
+                    return;
+                }
+
+                // UI Loading State
+                loaderAnalyze.classList.remove('hidden');
+                btnAnalyze.querySelector('span').textContent = 'מנתח...';
+                btnAnalyze.disabled = true;
+                resultAnalyze.innerHTML = '';
+
+                const prompt = `
+                    You are Avi Hazan, an expert real estate developer pitching the 'Beit Hasmonean' protected housing project.
+                    The project details: 12.6 dunam land, 175 housing units, 1300sqm commerce, 1300sqm offices. Total annual revenue 32.7M ILS.
+                    Combination deal offered: 22% to land owners.
+                    
+                    The user has input this resource: "${userInput}".
+                    
+                    Analyze the potential for them. Explain why the combination deal (receiving 22% of the finished product) is vastly superior to selling for cash now.
+                    Estimate potential future value based on the project stats.
+                    Keep the tone professional, encouraging, and persuasive.
+                    
+                    IMPORTANT: Answer ONLY in Hebrew. Use bolding for key numbers.
+                `;
+
+                try {
+                    const text = await generateContentWithRetry(prompt);
+                    // Simple formatting for bold text
+                    const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+                    resultAnalyze.innerHTML = formattedText;
+                } catch (error) {
+                    resultAnalyze.innerHTML = '<span class="text-red-500">אירעה שגיאה בניתוח הנתונים. אנא נסו שוב מאוחר יותר.</span>';
+                } finally {
+                    loaderAnalyze.classList.add('hidden');
+                    btnAnalyze.querySelector('span').innerHTML = '✨ נתח את הפוטנציאל';
+                    btnAnalyze.disabled = false;
+                }
+            });
+        }
+
+        // --- Feature 2: Ask Avi Chat ---
+        const btnChat = document.getElementById('btn-chat');
+        const inputChat = document.getElementById('ai-input-chat');
+        const resultChat = document.getElementById('result-chat');
+        const loaderChat = document.getElementById('loader-chat');
+
+        if (btnChat) {
+            btnChat.addEventListener('click', async () => {
+                const userQuestion = inputChat.value.trim();
+                if (!userQuestion) {
+                    resultChat.innerHTML = '<span class="text-red-500">נא להזין שאלה.</span>';
+                    return;
+                }
+
+                // UI Loading State
+                loaderChat.classList.remove('hidden');
+                btnChat.querySelector('span').textContent = 'חושב...';
+                btnChat.disabled = true;
+                resultChat.innerHTML = '';
+
+                const prompt = `
+                    You are Avi Hazan, the developer of 'Beit Hasmonean'.
+                    Context: You are convincing a land owner to sign a combination deal for a protected housing complex.
+                    Project stats: 175 units, high demand area, 5x value increase compared to cash sale.
+                    
+                    User Question: "${userQuestion}"
+                    
+                    Answer the question directly, professionally, and persuasively. Keep it concise (max 3-4 sentences).
+                    IMPORTANT: Answer ONLY in Hebrew.
+                `;
+
+                try {
+                    const text = await generateContentWithRetry(prompt);
+                    const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+                    resultChat.innerHTML = formattedText;
+                } catch (error) {
+                    resultChat.innerHTML = '<span class="text-red-500">אירעה שגיאה בקבלת התשובה.</span>';
+                } finally {
+                    loaderChat.classList.add('hidden');
+                    btnChat.querySelector('span').innerHTML = '✨ שאל את המומחה';
+                    btnChat.disabled = false;
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
